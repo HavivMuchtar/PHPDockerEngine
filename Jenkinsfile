@@ -28,18 +28,18 @@ pipeline {
                 }
             }
         }
-        stage('Deploy our image') {
+        stage('Push to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry( '', registryCredential ) {
+                    docker.withRegistry('', registryCredential) {
                         dockerImage.push()
                     }
                 }
             }
         }
-        stage('Cleaning up') {
+        stage('Run the image with Docker Compose') {
             steps {
-                sh "docker rmi $registry:$BUILD_NUMBER"
+                sh "docker-compose up -d $registry:$BUILD_NUMBER"
             }
         }
     }
