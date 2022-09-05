@@ -1,0 +1,6 @@
+version: '1.29.2'
+services:
+  php:
+    image: havivmuc/phpengine:9
+    ports:
+      - 80:80
