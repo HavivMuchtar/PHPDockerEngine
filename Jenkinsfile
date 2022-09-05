@@ -39,7 +39,8 @@ pipeline {
         }
         stage('Run the image with Docker Compose') {
             steps {
-                sh "docker-compose up -d $registry:$BUILD_NUMBER"
+                // sh "docker-compose up -d $registry:$BUILD_NUMBER"
+                step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StartService', scale: 1, service: 'php'], useCustomDockerComposeFile: false])
             }
         }
     }
