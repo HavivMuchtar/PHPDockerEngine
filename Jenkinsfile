@@ -1,4 +1,10 @@
 pipeline {
+    environment {
+        registry = "havivmuc/phpengine"
+        registryCredential = 'dockerhub_id'
+        dockerImage = ''
+    }
+    
     agent any
 
     stages {
@@ -13,6 +19,13 @@ pipeline {
             steps {
                 echo 'git init'
                 git branch: 'main', url: 'https://github.com/HavivMuchtar/PHPDockerEngine.git'
+            }
+        }
+        stage('Building our image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
             }
         }
     }
