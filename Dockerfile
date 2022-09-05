@@ -16,16 +16,19 @@ RUN docker-php-ext-install \
     mbstring \
     sockets
 
-FROM composer:2.1.11 AS construct
-WORKDIR /app
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY composer.json .
-COPY composer.lock .
-RUN composer install --no-dev --no-scripts --ignore-platform-reqs
+#FROM composer:2.1.11 AS construct
+#WORKDIR /app
 
-COPY . .
-RUN composer dumpautoload --optimize
+#COPY composer.json .
+#COPY composer.lock .
+#RUN composer install --no-dev --no-scripts --ignore-platform-reqs
+
+#COPY . .
+#RUN composer dumpautoload --optimize
 
 FROM basis AS final
 
-COPY --from=construct /app /app
+#COPY --from=construct /app /app
