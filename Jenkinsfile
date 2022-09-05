@@ -1,3 +1,5 @@
+properties([pipelineTriggers([githubPush()])])
+
 pipeline {
     environment {
         registry = "havivmuc/phpengine"
@@ -13,6 +15,18 @@ pipeline {
                 // Clean workspace before init
                 cleanWs()
                 echo 'Clean workspace'
+            }
+        }
+        stage('Checkout SCM') {
+            steps {
+                checkout([
+                 $class: 'GitSCM',
+                 branches: [[name: 'main']],
+                 userRemoteConfigs: [[
+                    url: 'git@github.com:havivmuc/PHPDockerEngine.git',
+                    credentialsId: '',
+                 ]]
+                ])
             }
         }
         stage('Git init') {
