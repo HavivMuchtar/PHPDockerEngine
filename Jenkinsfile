@@ -23,7 +23,7 @@ pipeline {
                  $class: 'GitSCM',
                  branches: [[name: 'main']],
                  userRemoteConfigs: [[
-                    url: 'git@github.com:HavivMuchtar/PHPDockerEngine.git',
+                    url: 'https://github.com/HavivMuchtar/PHPDockerEngine.git',
                     credentialsId: 'github_id2',
                  ]]
                 ])
