@@ -8,23 +8,22 @@ pipeline {
     agent any
 
     stages {
-        stage('initws') {
+        stage('Clean workspace') {
             steps {
                 // Clean workspace before init
                 cleanWs()
                 echo 'Clean workspace'
             }
         }
-        stage('gitinit') {
+        stage('Git init') {
             steps {
                 echo 'git init'
                 git branch: 'main', url: 'https://github.com/HavivMuchtar/PHPDockerEngine.git'
             }
         }
-        stage('Building our image') {
+        stage('Building the image') {
             steps {
                 script {
-                    //dockerImage = docker.build registry + ":$BUILD_NUMBER"
                     dockerImage = docker.build( registry + ":latest", "-t " + registry + ":v.$BUILD_NUMBER .")
                 }
             }
@@ -40,7 +39,6 @@ pipeline {
         }
         stage('Run the image with Docker Compose') {
             steps {
-                // sh "docker-compose up -d $registry:$BUILD_NUMBER"
                 step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StartService', scale: 1, service: 'php'], useCustomDockerComposeFile: false])
             }
         }
